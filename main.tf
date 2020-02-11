@@ -13,7 +13,7 @@ resource "aws_instance" "example" {
   vpc_security_group_ids = [aws_security_group.Port_8080_Allow.id]
   user_data = <<-EOF
               #!/bin/bash
-              echo "Hello, World" > index.html
+              echo "Hello, World. this is terraform learning by Karam" > index.html
               nohup busybox httpd -f -p ${var.Web_Port} &
                EOF
   tags = {
