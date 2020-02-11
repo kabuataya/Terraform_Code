@@ -7,6 +7,7 @@ resource "aws_instance" "example" {
 
   tags = {
     Name = "terraform-example"
-    Name = "karam"
+    Type = "Small"
+    Create_By = "Kay"
   }
 }
