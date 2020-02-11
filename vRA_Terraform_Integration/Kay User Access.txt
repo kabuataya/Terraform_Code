@@ -1,0 +1,10 @@
+Kay User Access
+
+https://124939203923.signin.aws.amazon.com/console
+
+Access Key ID: AKIAR2FXU6VJU2A2OW7S
+Secret Access Key: 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
+
+
+export AWS_ACCESS_KEY_ID=AKIAR2FXU6VJU2A2OW7S
+export AWS_SECRET_ACCESS_KEY=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
