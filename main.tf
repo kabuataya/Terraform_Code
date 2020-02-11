@@ -4,7 +4,7 @@ provider "aws" {
 
 variable "Web_Port" {
   description = "port used by busy box"
-  Type = number
+  type = number
   default = 8080
 }
 resource "aws_instance" "example" {
