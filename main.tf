@@ -69,7 +69,3 @@ resource "aws_security_group" "Port_8080_Allow" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-output "public IP" {
-  value = aws_instance.example.public_ip
-  description ="the public ip of the server generated"
-}
