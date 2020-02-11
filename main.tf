@@ -4,4 +4,9 @@ provider "aws" {
 resource "aws_instance" "example" {
   ami           = "ami-0df89c0ad05708804"
   instance_type = "t3.nano"
+
+  tags = {
+    Name = "terraform-example"
+    Name = "karam"
+  }
 }
