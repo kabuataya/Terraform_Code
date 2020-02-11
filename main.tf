@@ -4,14 +4,12 @@ provider "aws" {
 resource "aws_instance" "example" {
   ami           = "ami-0df89c0ad05708804"
   instance_type = "t3.nano"
-
+  vpc_security_group_ids = [aws_security_group.instance.id]
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
               nohup busybox httpd -f -p 8080 &
                EOF
-
-
   tags = {
     Name = "terraform-example"
     Type = "Small"
