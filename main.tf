@@ -27,7 +27,7 @@ resource "aws_launch_configuration" "Web_Servers" {
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World. this is terraform learning by Karam" > index.html
-              nohup busybox httpd -f -p ${var.server_port} &
+              nohup busybox httpd -f -p ${var.Web_Port} &
               EOF
   lifecycle {
     create_before_destroy = true
