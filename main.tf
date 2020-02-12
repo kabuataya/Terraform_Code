@@ -109,7 +109,7 @@ resource "aws_security_group" "alb_sg" {
 
 resource "aws_lb_target_group" "asg" {
   name     = "terraform-asg-example"
-  port     = var.server_port
+  port     = var.Web_Port
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
 
@@ -150,6 +150,6 @@ resource "aws_security_group" "Port_8080_Allow" {
   }
 }
 output "alb_dns_name" {
-  value       = aws_lb.example.dns_name
+  value       = aws_lb.port_8080_lb.dns_name
   description = "The domain name of the load balancer"
 }
