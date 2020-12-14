@@ -64,7 +64,7 @@ resource "aws_alb_listener_rule" "asg" {
 }
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.webapp_lb.arn
-  port = 80
+  port = local.http_port
   protocol = "HTTP"
   default_action {
     type = "fixed-response"
@@ -96,23 +96,23 @@ resource "aws_security_group" "web_server_sg" {
   ingress {
       from_port = var.server_port
       to_port = var.server_port
-      protocol = "tcp"
-      cidr_blocks =["0.0.0.0/0"]
+      protocol = local.tcp_protocol
+      cidr_blocks = local.all_ips
   }
 }
 resource "aws_security_group" "lb_web_asg" {
   name = "${var.cluster_name}-alb"
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = local.http_port
+    to_port = local.http_port
+    protocol = local.tcp_protocol
+    cidr_blocks = local.all_ips
   }
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = local.any_port
+    to_port = local.any_port
+    protocol = local.any_protocol
+    cidr_blocks = local.all_ips
   }
 }
 
