@@ -1,11 +1,11 @@
 provider "aws" {
   region = "us-east-2"
 }
-variable "server_port" {
+/*variable "server_port" {
   description = "ports the server will connect to"
   type = number
   default = 8080
-}
+}*/
 data "aws_vpc" "default" {
   default = true
 }
@@ -35,12 +35,12 @@ resource "aws_autoscaling_group" "web_server_asg" {
   max_size = 10
   tag {
     key = "Name"
-    value = "tf_Asg_web"
+    value = "${var.cluster_name}-web"
     propagate_at_launch = true
   }
 }
 resource "aws_lb" "webapp_lb" {
-  name = "webserverlb"
+  name = "${var.cluster_name}-lb"
   load_balancer_type = "application"
   subnets = data.aws_subnet_ids.default.ids
   security_groups = [aws_security_group.lb_web_asg.id]
@@ -91,7 +91,7 @@ resource "aws_instance" "tfexample" {
 }
 */
 resource "aws_security_group" "web_server_sg" {
-  name = "tfexample_sg"
+  name = "${var.cluster_name}_sg"
   ingress {
       from_port = var.server_port
       to_port = var.server_port
@@ -100,7 +100,7 @@ resource "aws_security_group" "web_server_sg" {
   }
 }
 resource "aws_security_group" "lb_web_asg" {
-  name = "web_sg_alb"
+  name = "${var.cluster_name}-alb"
   ingress {
     from_port = 80
     to_port = 80
@@ -116,7 +116,7 @@ resource "aws_security_group" "lb_web_asg" {
 }
 
 resource "aws_lb_target_group" "asg" {
-  name = "web-server-tg"
+  name = "${var.cluster_name}-tg"
   port = var.server_port
   protocol = "HTTP"
   vpc_id  = data.aws_vpc.default.id
