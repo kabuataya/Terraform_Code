@@ -14,7 +14,8 @@ data "aws_subnet_ids" "default" {
 }
 resource "aws_launch_configuration" "web_server_cluster" {
   image_id = "ami-0dd9f0e7df0f0a138"
-  instance_type = "t2.micro"
+  #instance_type = "t2.micro"
+  instance_type = var.instance_type
   security_groups = [aws_security_group.web_server_sg.id]
   user_data = <<-EOF
               #!/bin/bash
@@ -31,8 +32,8 @@ resource "aws_autoscaling_group" "web_server_asg" {
   vpc_zone_identifier = data.aws_subnet_ids.default.ids
   target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
-  min_size = 2
-  max_size = 10
+  min_size = var.min_size
+  max_size = var.max_size
   tag {
     key = "Name"
     value = "${var.cluster_name}-web"
