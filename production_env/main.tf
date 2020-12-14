@@ -8,4 +8,3 @@ module "web_server_cluster" {
     min_size = 2
     max_size = 10
 }
-
