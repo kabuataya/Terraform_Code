@@ -141,12 +141,14 @@ resource "aws_lb_target_group" "asg" {
   value = aws_lb.webapp_lb.dns_name
   description = "the IP address of the Load Balancer to Access the web App"
 }*/
-resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+
+
+/*resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   min_size = 2
   max_size = 10
   desired_capacity = 10
   recurrence = "0 9 * * *"
-  autoscaling_group_name = module.web_server_asg.asg_name
+  autoscaling_group_name = module.web_app.asg_name
   }
 resource "aws_autoscaling_schedule" "scale_in_at_night" {
   scheduled_action_name = "scale_in_at_night"
@@ -154,5 +156,5 @@ resource "aws_autoscaling_schedule" "scale_in_at_night" {
   max_size = 10
   desired_capacity = 2
   recurrence = "0 17 * * *"
-  autoscaling_group_name = module.web_server_asg.asg_name
-}
+  autoscaling_group_name = module.web_app.asg_name
+}*/
