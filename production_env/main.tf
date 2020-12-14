@@ -3,4 +3,6 @@ provider "aws" {
 }
 module "web_server_cluster" {
     source = "../web_app"
+    cluster_name = "webserver-prod"
 }
+
