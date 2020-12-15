@@ -18,7 +18,6 @@ variable "max_size" {
 }
 variable "instance_type" {
   description = "the type of EC2 instance"
-
 }
 locals {
   http_port = 80

@@ -5,7 +5,7 @@ data "aws_vpc" "default" {
   default = true
 }
 data "template_file" "user_data" {
-  template = file("user-data.sh")
+  template = file("${path.module}/user-data.sh")
   vars = {
     server_port1 = var.server_port
   }
