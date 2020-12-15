@@ -1,5 +1,5 @@
 output "asg_name" {
-    value = aws_autoscaling_group.aws_autoscaling_group.name
+    value = aws_autoscaling_group.web_server_asg.name
     description = "the name of the auto scaling group"
 }
 output "alb_dns_name" {

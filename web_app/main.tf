@@ -1,27 +1,28 @@
 provider "aws" {
   region = "us-east-2"
 }
-/*variable "server_port" {
-  description = "ports the server will connect to"
-  type = number
-  default = 8080
-}*/
 data "aws_vpc" "default" {
   default = true
+}
+data "template_file" "user_data" {
+  template = file("user-data.sh")
+  vars = {
+    server_port1 = var.server_port
+  }
 }
 data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
 }
 resource "aws_launch_configuration" "web_server_cluster" {
   image_id = "ami-0dd9f0e7df0f0a138"
-  #instance_type = "t2.micro"
   instance_type = var.instance_type
   security_groups = [aws_security_group.web_server_sg.id]
-  user_data = <<-EOF
-              #!/bin/bash
-              echo "Hello, World" > index.html
-              nohup busybox httpd -f -p ${var.server_port} &
-              EOF
+  #user_data = <<-EOF
+  #           #!/bin/bash
+  #            echo "Hello, World" > index.html
+  #            nohup busybox httpd -f -p ${var.server_port} &
+  #            EOF
+  user_data = data.template_file.user_data.rendered
   lifecycle {
     create_before_destroy = true
   }
