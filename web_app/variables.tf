@@ -31,3 +31,8 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
+/*variable "enable_autoscaling" {
+  description = "flag for auto scale"
+  type = bool
+  default = false
+}*/

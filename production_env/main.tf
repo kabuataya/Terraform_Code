@@ -4,6 +4,7 @@ provider "aws" {
 module "web_server_cluster" {
     source = "../web_app"
     cluster_name = "webserver-prod"
+    #enable_autoscaling = true
     instance_type = "t2.micro"
     min_size = 2
     max_size = 10
@@ -13,7 +14,8 @@ module "web_server_cluster" {
     }
 }
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
-  scheduled_action_name = "scale_out_in_business_hours"
+  #count = var.enable_autoscaling ? 1 : 0
+  scheduled_action_name = "${var.cluster_name}-scale-out-in-business-hours"
   min_size = 2
   max_size = 10
   desired_capacity = 10
@@ -21,7 +23,8 @@ resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   autoscaling_group_name = module.web_server_cluster.asg_name
   }
 resource "aws_autoscaling_schedule" "scale_in_at_night" {
-  scheduled_action_name = "scale_in_at_night"
+  #count = var.enable_autoscaling ? 1 : 0
+  scheduled_action_name = "${var.cluster_name}-scale-in-at-night"
   min_size = 2
   max_size = 10
   desired_capacity = 2
