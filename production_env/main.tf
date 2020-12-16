@@ -4,9 +4,13 @@ provider "aws" {
 module "web_server_cluster" {
     source = "../web_app"
     cluster_name = "webserver-prod"
-    instance_type = "m4.large"
+    instance_type = "t2.micro"
     min_size = 2
     max_size = 10
+    custom_tags = {
+      owner = "production_team"
+      DeployedBy = "Terraform"
+    }
 }
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   scheduled_action_name = "scale_out_in_business_hours"

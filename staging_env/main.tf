@@ -7,4 +7,8 @@ module "web_server_cluster" {
     instance_type = "t2.micro"
     min_size = 2
     max_size = 2
+    custom_tags = {
+      owner = "Dev_team"
+      DeployedBy = "Terraform"
+    }
 }
