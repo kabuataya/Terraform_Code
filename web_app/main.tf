@@ -7,7 +7,7 @@ data "aws_vpc" "default" {
 data "template_file" "user_data" {
   template = file("${path.module}/user-data.sh")
   vars = {
-    server_port1 = var.server_port
+    server_port = var.server_port
   }
 }
 data "aws_subnet_ids" "default" {
