@@ -127,10 +127,10 @@ resource "aws_security_group" "lb_web_asg" {
 resource "aws_security_group_rule" "allow_http_inbound_lb_web_asg" {
   type = "ingress"
   security_group_id = aws_security_group.lb_web_asg.id
-  from_port = var.server_port
-  to_port = var.server_port
-  protocol = local.tcp_protocol
-  cidr_blocks = local.all_ips
+    from_port = local.http_port
+    to_port = local.http_port
+    protocol = local.tcp_protocol
+    cidr_blocks = local.all_ips
 }
 resource "aws_security_group_rule" "allow_http_outbound_lb_web_asg" {
   type = "egress"
