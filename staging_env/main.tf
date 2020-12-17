@@ -13,7 +13,7 @@ module "web_server_cluster" {
       DeployedBy = "Terraform"
     }
 }
-resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+/*resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   count = var.enable_autoscaling ? 1 : 0
   scheduled_action_name = "${var.cluster_name}-scale-out-in-business-hours"
   min_size = 2
@@ -30,4 +30,4 @@ resource "aws_autoscaling_schedule" "scale_in_at_night" {
   desired_capacity = 2
   recurrence = "0 17 * * *"
   autoscaling_group_name = module.web_server_cluster.asg_name
-}
+}*/
