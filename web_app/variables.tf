@@ -4,11 +4,11 @@ variable "server_port" {
   default = 8080
 }
 variable "cluster_name" {
-  description = "the name to us for the the cluster resources"
+  description = "the name to use for the the cluster resources"
   type = string
 }
 variable "min_size" {
-  description = "the minumum size of the EC2 Instances"
+  description = "the minimum size of the EC2 Instances"
   type = number
 }
 
@@ -31,8 +31,8 @@ variable "custom_tags" {
   type        = map(string)
   default     = {}
 }
-/*variable "enable_autoscaling" {
+variable "enable_autoscaling" {
   description = "flag for auto scale"
   type = bool
   default = false
-}*/
+}
