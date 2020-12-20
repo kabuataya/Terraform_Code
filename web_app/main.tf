@@ -52,14 +52,12 @@ resource "aws_autoscaling_group" "web_server_asg" {
 }
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   count = var.enable_autoscaling ? 1 : 0
-  #scheduled_action_name = "scale-out-in-business-hours"
   scheduled_action_name = "${var.cluster_name}-scale-out-in-business-hours"
   min_size = 2
   max_size = 10
   desired_capacity = 10
   recurrence = "0 9 * * *"
   autoscaling_group_name = aws_autoscaling_group.web_server_asg.name
-  #autoscaling_group_name = module.web_server_asg.asg_name
   }
 resource "aws_autoscaling_schedule" "scale_in_at_night" {
   count = var.enable_autoscaling ? 1 : 0
@@ -118,7 +116,7 @@ resource "aws_instance" "tfexample" {
               echo "Hello, World" > index.html
               nohup busybox httpd -f -p ${var.server_port} &
               EOF
-  tags = {
+  tags = { 
     "Name" = "tfexample"
   }
 }
