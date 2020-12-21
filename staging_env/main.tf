@@ -8,6 +8,7 @@ module "web_server_cluster" {
     min_size = 2
     max_size = 2
     enable_autoscaling = false
+    code_new_version = false
     custom_tags = {
       owner = "Dev_team"
       DeployedBy = "Terraform"
