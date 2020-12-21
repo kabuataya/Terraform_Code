@@ -52,9 +52,22 @@ resource "aws_autoscaling_group" "web_server_asg" {
     value = "${var.cluster_name}-web"
     propagate_at_launch = true
   }
-  dynamic "tag" {
+  /*dynamic "tag" {
     for_each = var.custom_tags
 
+    content {
+      key = tag.key
+      value = tag.value
+      propagate_at_launch = true
+    }
+  }*/
+  dynamic "tag" {
+    for_each = {
+      for key, value in var.custom_tags:
+        key => upper(value)
+        if key != "Name"
+    }
+    
     content {
       key = tag.key
       value = tag.value
