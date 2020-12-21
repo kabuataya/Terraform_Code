@@ -38,6 +38,11 @@ variable "enable_autoscaling" {
   type = bool
   default = false
 }
+variable "code_new_version" {
+  description = "if set to true, we use version 2 of the shell script"
+  type = bool
+}
+
 locals {
   http_port = 80
   any_port = 0

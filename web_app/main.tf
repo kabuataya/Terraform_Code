@@ -5,9 +5,17 @@ data "aws_vpc" "default" {
   default = true
 }
 data "template_file" "user_data" {
+  count = var.code_new_version ? 0 : 1
   template = file("${path.module}/user-data.sh")
   vars = {
     server_port = var.server_port
+  }
+}
+data "template_file" "user_data_v2" {
+  count = var.code_new_version ? 1 : 0
+  template = file("${path.module}/user-data-modefied.sh")
+  vars = {
+    "server_port" = var.server_port
   }
 }
 data "aws_subnet_ids" "default" {
@@ -22,7 +30,11 @@ resource "aws_launch_configuration" "web_server_cluster" {
   #            echo "Hello, World" > index.html
   #            nohup busybox httpd -f -p ${var.server_port} &
   #            EOF
-  user_data = data.template_file.user_data.rendered
+  #user_data = data.template_file.user_data.rendered
+  user_data = (length(data.template_file.user_data[*]) > 0 
+    ? data.template_file.user_data[0].rendered
+    : data.template_file.user_data_v2[0].rendered
+    )
   lifecycle {
     create_before_destroy = true
   }
