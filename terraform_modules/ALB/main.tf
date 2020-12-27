@@ -1,7 +1,8 @@
 resource "aws_lb" "webapp_lb" {
   name = var.alb_name
   load_balancer_type = "application"
-  subnets = data.aws_subnet_ids.default.ids
+  #subnets = data.aws_subnet_ids.default.ids
+  subnet = var.subnet_ids
   security_groups = [aws_security_group.lb_web_asg.id]
 }
 resource "aws_lb_listener" "http_listener" {
@@ -19,18 +20,6 @@ resource "aws_lb_listener" "http_listener" {
 }
 resource "aws_security_group" "lb_web_asg" {
   name = var.alb_name
-  /*ingress {
-    from_port = local.http_port
-    to_port = local.http_port
-    protocol = local.tcp_protocol
-    cidr_blocks = local.all_ips
-  }
-  egress {
-    from_port = local.any_port
-    to_port = local.any_port
-    protocol = local.any_protocol
-    cidr_blocks = local.all_ips
-  }*/
 }
 resource "aws_security_group_rule" "allow_http_inbound_lb_web_asg" {
   type = "ingress"
