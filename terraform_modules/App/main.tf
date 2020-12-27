@@ -25,12 +25,13 @@ module "asg" {
 module "alb" {
   #source = "/terraform_modules/alb"
   source = "../alb"
-  alb_name = "${var.environment}"
+  alb_name = var.environment
   subnet_ids = data.aws_subnet_ids.default.ids
 }
 
 data "template_file" "user_data" {
-  template = file("${path.module}/user-data.sh")
+  #template = file("${path.module}/user-data.sh")
+  template = file("user-data.sh")
   vars = {
     server_port = var.server_port
   }
