@@ -43,6 +43,21 @@ variable "code_new_version" {
   type = bool
 }
 
+variable "ami" {
+  description = "the image that will be deployed for the infrastructure"
+  default = "ami-0dd9f0e7df0f0a138"
+  type = string
+}
+variable "server_text" {
+  description = "the text the web server should return"
+  default = "hello, World"
+  type = string
+}
+variable "min_size_upgrade" {
+  description = "the minimum number of servers to stay alive during upgrade"
+  default = 1
+  type = number
+}
 locals {
   http_port = 80
   any_port = 0

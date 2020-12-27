@@ -22,7 +22,7 @@ data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
 }
 resource "aws_launch_configuration" "web_server_cluster" {
-  image_id = "ami-0dd9f0e7df0f0a138"
+  image_id = var.ami
   instance_type = var.instance_type
   security_groups = [aws_security_group.web_server_sg.id]
   #user_data = <<-EOF
@@ -47,6 +47,10 @@ resource "aws_autoscaling_group" "web_server_asg" {
   health_check_type = "ELB"
   min_size = var.min_size
   max_size = var.max_size
+  min_elb_capacity = var.min_size_upgrade
+  lifecycle {
+    create_before_destroy = true
+  }
   tag {
     key = "Name"
     value = "${var.cluster_name}-web"

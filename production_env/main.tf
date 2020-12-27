@@ -12,6 +12,7 @@ module "web_server_cluster" {
     custom_tags = {
       owner = "production_team"
       DeployedBy = "Terraform"
+      vra_depoyment = "yes"
     }
 }
 /*resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
