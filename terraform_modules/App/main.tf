@@ -1,6 +1,13 @@
+provider "aws" {
+  region = "us-east-2"
+}
+/*data "aws_vpc" "default" {
+  default = true
+}*/
 module "asg" {
-  source = "/terraform_modules/ASG"
-  cluster_name  = "${var.environment}"
+  #source = "/terraform_modules/asg"
+  source = "../asg"
+  cluster_name  = var.environment
   ami           = var.ami
   user_data     = data.template_file.user_data.rendered
   instance_type = var.instance_type
@@ -12,22 +19,14 @@ module "asg" {
   subnet_ids        = data.aws_subnet_ids.default.ids
   target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
-  
   custom_tags = var.custom_tags
 }
 
 module "alb" {
-  source = "/terraform_modules/ALB"
+  #source = "/terraform_modules/alb"
+  source = "../alb"
   alb_name = "${var.environment}"
   subnet_ids = data.aws_subnet_ids.default.ids
-}
-data "template_file" "user_data" {
-  template = file("${path.module}/user-data.sh")
-
-  vars = {
-    server_port = var.server_port
-    server_text = var.server_text
-  }
 }
 
 data "template_file" "user_data" {

@@ -30,11 +30,13 @@ variable "server_port" {
 variable "min_size" {
   description = "the minimum size of the EC2 Instances"
   type = number
+  default = 2
 }
 
 variable "max_size" {
   description = "the maximum number of the EC2 insatnces"
   type = number
+  default = 10
 }
 
 variable "instance_type" {
@@ -54,10 +56,7 @@ variable "enable_autoscaling" {
   type = bool
   default = false
 }
-variable "code_new_version" {
-  description = "if set to true, we use version 2 of the shell script"
-  type = bool
-}
+
 
 variable "ami" {
   description = "the image that will be deployed for the infrastructure"
