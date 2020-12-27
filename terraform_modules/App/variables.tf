@@ -30,13 +30,13 @@ variable "server_port" {
 variable "min_size" {
   description = "the minimum size of the EC2 Instances"
   type = number
-  default = 2
+  #default = 2
 }
 
 variable "max_size" {
   description = "the maximum number of the EC2 insatnces"
   type = number
-  default = 10
+  #default = 10
 }
 
 variable "instance_type" {
@@ -54,7 +54,7 @@ variable "custom_tags" {
 variable "enable_autoscaling" {
   description = "if set to true, then autom scale will be anabled"
   type = bool
-  default = false
+  #default = false
 }
 
 
@@ -72,11 +72,4 @@ variable "min_size_upgrade" {
   description = "the minimum number of servers to stay alive during upgrade"
   default = 1
   type = number
-}
-locals {
-  http_port = 80
-  any_port = 0
-  any_protocol = "-1"
-  tcp_protocol = "tcp"
-  all_ips = ["0.0.0.0/0"]
 }

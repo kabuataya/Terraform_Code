@@ -1,11 +1,7 @@
 provider "aws" {
   region = "us-east-2"
 }
-/*data "aws_vpc" "default" {
-  default = true
-}*/
 module "asg" {
-  #source = "/terraform_modules/asg"
   source = "../asg"
   cluster_name  = var.environment
   ami           = var.ami
@@ -14,7 +10,7 @@ module "asg" {
 
   min_size           = var.min_size
   max_size           = var.max_size
-  enable_autoscaling = true
+  enable_autoscaling = var.enable_autoscaling
 
   subnet_ids        = data.aws_subnet_ids.default.ids
   target_group_arns = [aws_lb_target_group.asg.arn]
@@ -25,13 +21,14 @@ module "asg" {
 module "alb" {
   #source = "/terraform_modules/alb"
   source = "../alb"
-  alb_name = var.environment
+
+  alb_name = "ELB-${var.environment}"
   subnet_ids = data.aws_subnet_ids.default.ids
 }
 
 data "template_file" "user_data" {
-  #template = file("${path.module}/user-data.sh")
-  template = file("user-data.sh")
+  template = file("${path.module}/user-data.sh")
+  #template = file("../app/user-data.sh")
   vars = {
     server_port = var.server_port
   }

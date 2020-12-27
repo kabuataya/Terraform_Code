@@ -2,23 +2,21 @@ resource "aws_launch_configuration" "web_server_cluster" {
   image_id = var.ami
   instance_type = var.instance_type
   security_groups = [aws_security_group.web_server_sg.id]
-  user_data = (length(data.template_file.user_data[*]) > 0 
-    ? data.template_file.user_data[0].rendered
-    : data.template_file.user_data_v2[0].rendered
-    )
+  user_data = var.user_data
   lifecycle {
     create_before_destroy = true
   }
 }
 
 resource "aws_autoscaling_group" "web_server_asg" {
+  name = "${var.cluster_name}-${aws_launch_configuration.web_server_cluster.name}"
   launch_configuration = aws_launch_configuration.web_server_cluster.name
-  vpc_zone_identifier = data.aws_subnet_ids.default.ids
-  target_group_arns = [aws_lb_target_group.asg.arn]
-  health_check_type = "ELB"
+  vpc_zone_identifier = var.subnet_ids
+  target_group_arns = var.target_group_arns
+  health_check_type = var.health_check_type
   min_size = var.min_size
   max_size = var.max_size
-  min_elb_capacity = var.min_size_upgrade
+  min_elb_capacity = var.min_size
   lifecycle {
     create_before_destroy = true
   }
@@ -69,4 +67,8 @@ resource "aws_security_group_rule" "allow_http_inbound_web_server_sg" {
   to_port = var.server_port
   protocol = local.tcp_protocol
   cidr_blocks = local.all_ips
+}
+locals {
+  tcp_protocol = "tcp"
+  all_ips      = ["0.0.0.0/0"]
 }

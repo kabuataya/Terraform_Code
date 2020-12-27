@@ -9,6 +9,6 @@ output "asg_name" {
 }
 
 output "instance_security_group_id" {
-  value       = module.asg.instance_security_group_id
+  value       = module.asg.instace_security_group_id
   description = "The ID of the EC2 Instance Security Group"
 }
