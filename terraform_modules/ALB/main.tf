@@ -37,3 +37,10 @@ resource "aws_security_group_rule" "allow_http_outbound_lb_web_asg" {
   protocol = local.any_protocol
   cidr_blocks = local.all_ips
 }
+locals {
+  http_port = 80
+  any_port = 0
+  any_protocol = "-1"
+  tcp_protocol = "tcp"
+  all_ips = ["0.0.0.0/0"]
+}
