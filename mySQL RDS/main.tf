@@ -1,3 +1,9 @@
+provider "aws" {
+  region = "us-east-2"
+}
+data "aws_vpc" "default" {
+  default = true
+}
 resource "aws_db_instance" "mysql_kay" {
   identifier_prefix   = "terraform-up-and-running"
   engine              = "mysql"
