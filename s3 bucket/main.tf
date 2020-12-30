@@ -15,6 +15,6 @@ resource "aws_s3_bucket" "AWS_Bucket" {
     }
 }
 output "s3_bucket_arn" {
-    value = aws_s3_bucket.terraform_state.arn
+    value = aws_s3_bucket.AWS_Bucket.arn
     description = "the ARN of the S3 bucket"
 }
