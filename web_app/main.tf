@@ -4,7 +4,7 @@ provider "aws" {
 data "aws_vpc" "default" {
   default = true
 }
-data "template_file" "user_data" {
+/*data "template_file" "user_data" {
   count = var.code_new_version ? 0 : 1
   template = file("${path.module}/user-data.sh")
   vars = {
@@ -17,7 +17,23 @@ data "template_file" "user_data_v2" {
   vars = {
     "server_port" = var.server_port
   }
+}*/
+data "template_file" "user_data" {
+  count = var.code_new_version ? 0 : 1
+  template = file("${path.module}/user-data.sh")
+  vars = {
+    server_port = var.server_port
+  }
 }
+data "template_file" "user_data_v2" {
+  count = var.code_new_version ? 1 : 0
+  template = templatefile("${path.module}/user-data-modefied.sh",{"server_port" = 8080})
+  #template = file("${path.module}/user-data-modefied.sh")
+  /*vars = {
+    "server_port" = var.server_port
+  }*/
+}
+
 data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
 }
