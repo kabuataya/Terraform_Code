@@ -20,10 +20,10 @@ data "template_file" "user_data_v2" {
 }*/
 data "template_file" "user_data" {
   count = var.code_new_version ? 0 : 1
-  template = file("${path.module}/user-data.sh")
-  vars = {
+  template = templatefile("${path.module}/user-data.sh",{"server_port" = 8080})
+ /* vars = {
     server_port = var.server_port
-  }
+  }*/
 }
 data "template_file" "user_data_v2" {
   count = var.code_new_version ? 1 : 0
