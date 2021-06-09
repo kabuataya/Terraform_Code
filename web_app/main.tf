@@ -20,14 +20,14 @@ data "template_file" "user_data_v2" {
 }*/
 data "template_file" "user_data" {
   count = var.code_new_version ? 0 : 1
-  template = templatefile("${path.module}/user-data.sh",{"server_port" = 8080})
+  template = templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
  /* vars = {
     server_port = var.server_port
   }*/
 }
 data "template_file" "user_data_v2" {
   count = var.code_new_version ? 1 : 0
-  template = templatefile("${path.module}/user-data-modefied.sh",{"server_port" = 8080})
+  template = templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
   #template = file("${path.module}/user-data-modefied.sh")
   /*vars = {
     "server_port" = var.server_port
