@@ -48,9 +48,15 @@ resource "aws_launch_configuration" "web_server_cluster" {
   #            EOF
   #user_data = data.template_file.user_data.rendered
   user_data = (length(data.template_file.user_data[*]) > 0 
-    ? data.template_file.user_data[0].rendered
-    : data.template_file.user_data_v2[0].rendered
-    )
+  ? templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
+  : templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
+  )
+ // user_data = (length(data.template_file.user_data[*]) > 0 
+ //   ? templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
+ //   : templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
+ //   ? data.template_file.user_data[0].rendered
+ //   : data.template_file.user_data_v2[0].rendered 
+ //   )
   lifecycle {
     create_before_destroy = true
   }
