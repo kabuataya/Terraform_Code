@@ -34,6 +34,11 @@ data "template_file" "user_data_v2" {
   }*/
 }
 
+locals {
+  user_data_v1 = templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
+  user_data_v2 = templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
+}
+
 data "aws_subnet_ids" "default" {
   vpc_id = data.aws_vpc.default.id
 }
@@ -47,16 +52,20 @@ resource "aws_launch_configuration" "web_server_cluster" {
   #            nohup busybox httpd -f -p ${var.server_port} &
   #            EOF
   #user_data = data.template_file.user_data.rendered
-  user_data = (length(data.template_file.user_data[*]) > 0 
-  ? templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
-  : templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
-  )
+ // user_data = (length(data.template_file.user_data[*]) > 0 
+ // ? templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
+ // : templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
+ // )
+ ////------
  // user_data = (length(data.template_file.user_data[*]) > 0 
  //   ? templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
  //   : templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
  //   ? data.template_file.user_data[0].rendered
  //   : data.template_file.user_data_v2[0].rendered 
  //   )
+
+    user_data = var.code_new_version ? local.user_data_v2 : local.user_data_v1
+
   lifecycle {
     create_before_destroy = true
   }
