@@ -5,7 +5,6 @@ data "aws_vpc" "default" {
   default = true
 }
 
-
 locals {
   user_data_v1 = templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
   user_data_v2 = templatefile("${path.module}/user-data-modefied.sh",{"server_port" = var.server_port})
