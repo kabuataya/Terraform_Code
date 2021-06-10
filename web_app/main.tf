@@ -4,20 +4,7 @@ provider "aws" {
 data "aws_vpc" "default" {
   default = true
 }
-/*data "template_file" "user_data" {
-  count = var.code_new_version ? 0 : 1
-  template = file("${path.module}/user-data.sh")
-  vars = {
-    server_port = var.server_port
-  }
-}
-data "template_file" "user_data_v2" {
-  count = var.code_new_version ? 1 : 0
-  template = file("${path.module}/user-data-modefied.sh")
-  vars = {
-    "server_port" = var.server_port
-  }
-}*/
+
 
 locals {
   user_data_v1 = templatefile("${path.module}/user-data.sh",{"server_port" = var.server_port})
