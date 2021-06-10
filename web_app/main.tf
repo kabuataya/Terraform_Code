@@ -40,15 +40,7 @@ resource "aws_autoscaling_group" "web_server_asg" {
     value = "${var.cluster_name}-web"
     propagate_at_launch = true
   }
-  /*dynamic "tag" {
-    for_each = var.custom_tags
 
-    content {
-      key = tag.key
-      value = tag.value
-      propagate_at_launch = true
-    }
-  }*/
   dynamic "tag" {
     for_each = {
       for key, value in var.custom_tags:
@@ -74,14 +66,14 @@ resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   }
 resource "aws_autoscaling_schedule" "scale_in_at_night" {
   count = var.enable_autoscaling ? 1 : 0
-  #scheduled_action_name = "scale-in-at-night"
+
   scheduled_action_name = "${var.cluster_name}-scale-in-at-night"
   min_size = 2
   max_size = 10
   desired_capacity = 2
   recurrence = "0 17 * * *"
   autoscaling_group_name = aws_autoscaling_group.web_server_asg.name
-  #autoscaling_group_name = module.web_server_asg.asg_name
+
 }
 resource "aws_lb" "webapp_lb" {
   name = "${var.cluster_name}-lb"
@@ -119,29 +111,9 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
-/*
-resource "aws_instance" "tfexample" {
-  ami = "ami-0dd9f0e7df0f0a138"
-  instance_type = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.web_server_sg.id]
-  user_data = <<-EOF
-              #!/bin/bash
-              echo "Hello, World" > index.html
-              nohup busybox httpd -f -p ${var.server_port} &
-              EOF
-  tags = { 
-    "Name" = "tfexample"
-  }
-}
-*/
+
 resource "aws_security_group" "web_server_sg" {
   name = "${var.cluster_name}_sg"
-  /*ingress {
-      from_port = var.server_port
-      to_port = var.server_port
-      protocol = local.tcp_protocol
-      cidr_blocks = local.all_ips
-  }*/
 }
 resource "aws_security_group_rule" "allow_http_inbound_web_server_sg" {
   type = "ingress"
@@ -153,18 +125,7 @@ resource "aws_security_group_rule" "allow_http_inbound_web_server_sg" {
 }
 resource "aws_security_group" "lb_web_asg" {
   name = "${var.cluster_name}-alb"
-  /*ingress {
-    from_port = local.http_port
-    to_port = local.http_port
-    protocol = local.tcp_protocol
-    cidr_blocks = local.all_ips
-  }
-  egress {
-    from_port = local.any_port
-    to_port = local.any_port
-    protocol = local.any_protocol
-    cidr_blocks = local.all_ips
-  }*/
+
 }
 resource "aws_security_group_rule" "allow_http_inbound_lb_web_asg" {
   type = "ingress"
@@ -199,29 +160,3 @@ resource "aws_lb_target_group" "asg" {
     unhealthy_threshold = 2
   }
 }
-    #output "public_ip_address" {
-    #value = aws_instance.tfexample.public_ip
-    #description = "the public ip address of the deployed machine"
-#}
-
-/*output "alb_dns_name" {
-  value = aws_lb.webapp_lb.dns_name
-  description = "the IP address of the Load Balancer to Access the web App"
-}*/
-
-
-/*resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
-  min_size = 2
-  max_size = 10
-  desired_capacity = 10
-  recurrence = "0 9 * * *"
-  autoscaling_group_name = module.web_app.asg_name
-  }
-resource "aws_autoscaling_schedule" "scale_in_at_night" {
-  scheduled_action_name = "scale_in_at_night"
-  min_size = 2
-  max_size = 10
-  desired_capacity = 2
-  recurrence = "0 17 * * *"
-  autoscaling_group_name = module.web_app.asg_name
-}*/
